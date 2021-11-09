@@ -1,0 +1,43 @@
+$media-desktop-min: 1140px;
+$media-tablet-min: 768px;
+$media-mobile-min: 320px;
+$font-main: "Oswald", sans-serif;
+$font-second: "Arial", sans-serif;
+$resolution: (
+  "desktop": 1280px,
+  "tablet": 768px,
+  "mobile": 320px,
+);
+$settings: (
+  desktop: (
+    resolution: 1280px,
+    size: (
+      header: 60px 60px,
+      sub-header: 36px 37px,
+      menu: 20px 25px,
+      sub-menu: 20px 20px,
+      text-small: 14px,
+      text-adress: 16px 20px,
+      text-adress__header: 20px 25px,
+      text-big: 30px 37px,
+      number: 281px,
+      text: 16px 24px,
+      text-midle: 20px 24px,
+    ),
+  ),
+  tablet: (
+    resolution: 768px,
+    size: (
+      header: 36px 36px,
+      menu: 18px 25px,
+      sub-menu: 14px 14px,
+      button: 14px,
+    ),
+  ),
+  mobile: (
+    resolution: 320px,
+    size: (),
+  ),
+  min-max: min,
+  size-order: desktop table mobile
+);

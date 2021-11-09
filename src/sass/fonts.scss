@@ -1,0 +1,13 @@
+@font-face {
+    font-family: Arial, "Helvetica CY", "Nimbus Sans L", sans-serif;
+    src: local("Arial"), local("Helvetica CY"), local("Nimbus Sans L");
+    font-style: normal;
+    font-display: wrap;
+}
+
+@font-face {
+    font-family: Oswald, sans-serif;
+    src: url(../fonts/Oswald-Regular.woff) format("woff"), url(../fonts/Oswald-Regular.woff2) format("woff2");
+    font-style: normal;
+    font-display: wrap;
+}

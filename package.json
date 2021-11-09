@@ -1,0 +1,45 @@
+{
+    "name": "my-cat-energy-gulp",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "gulp": "gulp"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "browser-sync": "2.27.7",
+        "gulp": "4.0.2",
+        "gulp-autoprefixer": "8.0.0",
+        "gulp-babel": "8.0.0",
+        "gulp-changed": "4.0.3",
+        "gulp-clean-css": "4.3.0",
+        "gulp-concat": "2.6.1",
+        "gulp-htmlmin": "5.0.1",
+        "gulp-if": "3.0.0",
+        "gulp-imagemin": "7.1.0",
+        "gulp-plumber": "1.2.1",
+        "gulp-posthtml": "3.0.5",
+        "gulp-sass": "5.0.0",
+        "gulp-sourcemaps": "3.0.0",
+        "gulp-svg-sprite": "1.5.0",
+        "gulp-ttf2woff": "1.1.1",
+        "gulp-ttf2woff2": "4.0.1",
+        "gulp-uglify": "3.0.2",
+        "gulp-webp": "4.0.1",
+        "posthtml-include": "1.7.2",
+        "rimraf": "3.0.2",
+        "sass": "1.43.4"
+    },
+    "browserslist": [
+        "last 2 versions",
+        "not dead",
+        "not ie <= 11"
+    ],
+    "dependencies": {
+        "normalize.css": "8.0.1",
+        "slick-slider": "^1.8.2"
+    }
+}

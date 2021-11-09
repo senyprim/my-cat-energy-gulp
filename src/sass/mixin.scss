@@ -1,0 +1,200 @@
+@function slice($list, $start: 1, $end: length($list)) {
+    $result: null;
+  
+    @if type-of($start) != number or type-of($end) != number {
+      @warn "Either $start or $end are not a number for `slice`.";
+    }
+    
+    @else if $start > $end {
+      @warn "The start index has to be lesser than or equals to the end index for `slice`.";
+    }
+    
+    @else if $start < 1 or $end < 1 {
+        @warn "List indexes must be non-zero integers for `slice`.";
+    }
+    
+    @else if $start > length($list) {
+        @warn "List index is #{$start} but list is only #{length($list)} item long for `slice`.";
+    }
+    
+    @else if $end > length($list) {
+        @warn "List index is #{$end} but list is only #{length($list)} item long for `slice`.";
+    }
+  
+    @else {
+      $result: ();
+      
+      @for $i from $start through $end {
+          $result: append($result, nth($list, $i));
+      }
+    }
+    
+    @return $result;
+}
+//Делит строку по сепаратору
+@function split($string, $separator) {
+  // empty array/list
+  $split-arr: ();
+  // first index of separator in string
+  $index: str-index($string, $separator);
+  // loop through string
+  @while $index !=null {
+    // get the substring from the first character to the separator
+    $item: str-slice($string, 1, $index - 1);
+    // push item to array
+    $split-arr: append($split-arr, $item);
+    // remove item and separator from string
+    $string: str-slice($string, $index + 1);
+    // find new index of separator
+    $index: str-index($string, $separator);
+  }
+  // add the remaining string to list (the last item)
+  $split-arr: append($split-arr, $string);
+  @return $split-arr;
+}
+@function get-string-without-first-part($string,$separatop){
+    
+    $index:string-index($string,$separatop)+1;
+    //Если сепаратор не найден или он в конце строки вернуть первоначальную строку
+    @if not $index or $index>lenght($string){
+        @return $string;
+    }
+    //Иначе возвращаем с отрезанным началом строки
+    @return string.slice($string,$index);
+}
+
+//Получает значение в мапе по состовному ключу
+@function get-setting($map: $settings, $key, $separator) {
+  $keys: split($key, $separator);
+  $index: 1; //Индекс ключа (нужен для проверки конца массива ключей)
+  $scope: $map;
+  @while type-of($scope) ==map and ($index<=length($keys)) {
+    $map: map-get($scope, nth($keys, index));
+    $index: $index + 1;
+  }
+  @return $scope;
+}
+
+
+@mixin set-text-property(
+  $font,
+  $size,
+  $line-height,
+  $font-weight,
+  $style,
+  $color
+) {
+  @if $font {
+    font-family: $font;
+  }
+  @if $size {
+    font-size: $size;
+  }
+  @if $line-height {
+    line-height: $line-height;
+  }
+  @if $font-weight {
+    font-weight: $font-weight;
+  }
+  @if $style {
+    font-style: $style;
+  }
+  @if $color {
+    color: $color;
+  }
+}
+//По 
+@function get-property-map($group-propertires,$args...){
+    $map: ();
+}
+@mixin set-text-propertyes($args...) {
+  $map: ();
+  $result: ();
+  @each $arg in $args {
+    $type: type-of($arg);
+    @if map-has-key($map, $type) {
+      $old-value: map-get($map, $type);
+      $new-value: list-append($old-value, $arg);
+      $map: map-set($map, $type, $new-value);
+    } @else {
+      $map: map-set($map, $type, $arg);
+    }
+  }
+  //Color
+  $color: map-get($map, "color");
+  $result: map-set($result, "color", if(type-of($color) ==color, $color, null));
+  //Размеры
+  $numbers: map-get($map, "number");
+  $size-property: font-size line-height font-weight letter-spacing;
+  @for $index from 1 to length($numbers) {
+    $value: nth($numbers, $index);
+    $result: map-set(
+      $result,
+      nth($size-property, index),
+      nth($numbers, $index)
+    );
+  }
+  //Текстовые
+  $strings: map-get($map, "string");
+  $string-property: "font-family" "font-style";
+  @for $index from 1 to length($strings) {
+    $value: nth($strings, $index);
+    $result: map-set(
+      $result,
+      nth($string-property, index),
+      nth($strings, $index)
+    );
+  }
+  @include set-text-property(
+    map-get($result, "font-family"),
+    map-get($result, "font-size"),
+    map-get($result, "line-height"),
+    map-get($result, "font-weight"),
+    map-get($result, "font-style"),
+    map-get($result, "color")
+  );
+}
+
+@mixin set-text-setting($setting-name,$separator:'.') {
+    $new-setting-name:get-string-without-first-part($setting-name,$separator);
+    @each $media in get-setting('size-order') {
+        
+    }
+    
+
+}
+
+@mixin set-text($font: $font-main, $style: $default-text-style) {
+  $font-size: list.nth($style, 1);
+  $line-height: list.nth($style, 2);
+}
+
+@mixin responsive-ratio($x, $y, $pseudo: false) {
+  $padding: unquote(($y / $x) * 100 + "%");
+  @if $pseudo {
+    &:before {
+      @include pseudo($pos: relative);
+      width: 100%;
+      padding-top: $padding;
+    }
+  } @else {
+    padding-top: $padding;
+  }
+}
+
+@mixin media($width, $type) {
+  $resolution: "";
+  $type: get-setting("min-max-default") !default;
+  $type: min !default;
+  @if type-of($width) ==number {
+    $resolution: $width;
+  } @else {
+    $resolution: get-setting("#{$width}.resolution");
+  }
+  @if $type==max {
+    $resolution: $resolution-1px;
+  }
+  @media screen and (#{$type}-width: $resolution) {
+    @content;
+  }
+}
