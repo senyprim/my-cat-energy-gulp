@@ -1,10 +1,9 @@
 const ALL_FILE = "*.*";
 const BITMAP_FILE = ["png", "jpg", "gif"];
-const SVG_FILE = ["svg"];
 const bitmapImg = `*.{${BITMAP_FILE.join(",")}}`;
-const svgImg = `*.{${SVG_FILE.join(",")}}`;
-const SPRITE_FILES = ["*.svg"];
+const SVG_FILE = `*.svg`;
 const SPRITE_SUFFICS = ["inline", "sprite"];
+const SVG_SPRITE = `{inline,sprite}-*.svg`;
 
 const pathDir = require("path");
 const gulp = require("gulp");
@@ -67,6 +66,7 @@ const path = {
 const clean = (cb) => {
   return rimraf(`{${path.clean.join(",")}}`, cb);
 };
+exports.clean = clean;
 //Сервер
 const server = (done) => {
   browserSync.init({
@@ -85,28 +85,31 @@ const reload = (cb) => {
 };
 exports.server = server;
 exports.reload = reload;
+
+/* #region  Fonts */
+
 const ttfToWoff = () => {
-  //TODO
   return gulp
-    .src("src/fonts/**/*.ttf")
+    .src(path.src.fonts + "*.ttf")
     .pipe(woff())
     .pipe(gulp.dest(path.src.fonts));
 };
 const ttfToWoff2 = () => {
-  //TODO
   return gulp
-    .src("src/fonts/**/*.ttf")
+    .src(path.src.fonts + "*.ttf")
     .pipe(woff2())
     .pipe(gulp.dest(path.src.fonts));
 };
 const copyFonts = () => {
-  return gulp.src("src/fonts/**/*.*").pipe(gulp.dest(path.build.fonts));
+  return gulp.src(path.src.fonts + "*.*").pipe(gulp.dest(path.build.fonts));
 };
 const fonts = gulp.series(gulp.parallel(ttfToWoff, ttfToWoff2), copyFonts);
 
 exports.fonts = fonts;
 
-// HTML
+/* #endregion */
+
+/* #region  HTML */
 const html = () => {
   return gulp
     .src(path.src.html, { allowEmpty: true })
@@ -126,10 +129,21 @@ const html = () => {
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(path.build.html)); //Выплюнем их в папку build
 };
+
+/* #endregion */
+
+/* #region  CSS */
 const stylesLib = () => {
   return gulp
     .src(stilesLib, { allowEmpty: true })
-    .pipe(plumber())
+    .pipe(
+      plumber({
+        handleError: function (err) {
+          console.log(err);
+          this.emit("end");
+        },
+      })
+    )
     .pipe(concat("lib.css"))
     .pipe(prefixer()) //Добавим вендорные префиксы
     .pipe(cssmin()) //Сожмем
@@ -138,7 +152,14 @@ const stylesLib = () => {
 const style = () => {
   return gulp
     .src(path.src.style, { allowEmpty: true }) //Выберем наш главный стиль
-    .pipe(plumber())
+    // .pipe(
+    //   plumber({
+    //     handleError: function (err) {
+    //       console.log(err);
+    //       this.emit("end");
+    //     },
+    //   })
+    // )
     .pipe(sourcemaps.init()) //То же самое что и с js
     .pipe(sass()) //Скомпилируем
     .pipe(prefixer()) //Добавим вендорные префиксы
@@ -147,12 +168,14 @@ const style = () => {
     .pipe(gulp.dest(path.build.css)); //И в build
 };
 exports.style = style;
+/* #endregion */
 
+/* #region  Image */
 const bitMapImage = () => {
+  console.log(path.src.img + bitmapImg);
   return (
     gulp
-      .src(path.src.img + "*.*",{ since: gulp.lastRun(createWebp) })
-
+      .src(path.src.img + bitmapImg, { since: gulp.lastRun(createWebp) })
       //.src(path.src.img + '/*.jpg', { allowEmpty: true, since: gulp.lastRun(bitMapImage) }) //Выберем каталог изображений измененных с последнего раза
       .pipe(
         imagemin([
@@ -174,12 +197,23 @@ const createWebp = () => {
 };
 exports.webp = createWebp;
 const svgImage = () => {
-  return gulp
-    .src(path.src.img + svgImg, `!${SPRITE_FILES}`, { allowEmpty: true }) //Выберем каталог svg изображений
-    .pipe(imagemin([imagemin.svgo()]))
-    .pipe(gulp.dest(path.build.img)); //И бросим в минифицированные
+  return (
+    gulp
+      .src(path.src.img + SVG_FILE, {
+        allowEmpty: true,
+      }) //Выберем каталог svg изображений
+      // .on("data", (file) => console.log(file.path))
+      .pipe(
+        imagemin([
+          imagemin.svgo({
+            plugins: [{ removeViewBox: true }],
+          }),
+        ])
+      )
+      .pipe(gulp.dest(path.build.img))
+  ); //И бросим в минифицированные
 };
-
+exports.svgImage = svgImage;
 //Создает спрайты по шаблону из массива SPRITE_SUFFICS ([name]-*.svg)
 //Чтобы объединить несколько потоков в один применяем merge-stream
 const svgSprites = () => {
@@ -187,12 +221,22 @@ const svgSprites = () => {
     SPRITE_SUFFICS.map(function (spriteName) {
       return (
         gulp
-          .src(path.src.img + spriteName + "-" + SPRITE_FILES, {
+          .src(path.src.img + spriteName + "-" + SVG_FILE, {
             allowEmpty: true,
           }) //Выберем каталог svg изображений
           //.on("data", (file) => console.log(file.path))
           .pipe(
+            imagemin([
+              imagemin.svgo({
+                plugins: [{ removeViewBox: true }],
+              }),
+            ])
+          )
+          .pipe(
             svgsprite({
+              // svg: {
+              //   dimensionAttributes: true,
+              // },
               mode: {
                 stack: {
                   sprite: `../${spriteName}.svg`,
@@ -207,11 +251,13 @@ const svgSprites = () => {
 };
 exports.svgSprites = svgSprites;
 
+/* #endregion */
+
 const watcher = () => {
   gulp.watch(path.watch.html, gulp.series(html, reload));
   gulp.watch(
     path.watch.img,
-    gulp.series(gulp.parallel(bitMapImage, svgImage, svgSprites,createWebp)),
+    gulp.series(gulp.parallel(bitMapImage, svgImage, svgSprites, createWebp)),
     reload
   );
   gulp.watch(path.watch.style, gulp.series(style, reload));
@@ -220,7 +266,15 @@ const watcher = () => {
 const build = gulp.series(
   clean,
   svgSprites,
-  gulp.parallel(fonts, style, stylesLib, html, bitMapImage, svgImage,createWebp)
+  gulp.parallel(
+    fonts,
+    style,
+    stylesLib,
+    html,
+    bitMapImage,
+    svgImage,
+    createWebp
+  )
 );
 
 exports.build = build;

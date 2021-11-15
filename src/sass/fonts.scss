@@ -6,8 +6,9 @@
 }
 
 @font-face {
-    font-family: Oswald, sans-serif;
-    src: url(../fonts/Oswald-Regular.woff) format("woff"), url(../fonts/Oswald-Regular.woff2) format("woff2");
+    font-family: "Oswald";
+    src: url("../fonts/Oswald-Regular.woff") format("woff"), url("../fonts/Oswald-Regular.woff2") format("woff2");
+    font-weight: 400;
     font-style: normal;
     font-display: wrap;
 }

@@ -1,0 +1,46 @@
+.example {
+    padding: 20px;
+    background-color: #f2f2f2;
+    &__title{
+
+    }
+    &__header{
+        line-height: 60px;
+
+    }
+    &__content{
+    }
+    &__text-block {
+    }
+    &__description {
+        font: 14px/18px Arial;
+        padding: 20px 0 20px;
+    }
+    &__achievement-list {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 35px;
+    }
+    &__achievement {
+        max-width: 126px;
+        width: 100%;
+    }
+    &__expenses {
+        font:14px/20px Oswald;
+        text-align: center;
+        text-transform: uppercase;
+    }
+    &__expenses-title {
+    }
+    &__expenses-price {
+    }
+    &__slider {
+    }
+    &__slider-images {
+    }
+    &__slider-controls {
+    }
+    
+}

@@ -64,12 +64,12 @@
 }
 
 //Получает значение в мапе по состовному ключу
-@function get-setting($map: $settings, $key, $separator) {
+@function get-setting($map: $settings, $key, $separator:'.') {
   $keys: split($key, $separator);
   $index: 1; //Индекс ключа (нужен для проверки конца массива ключей)
   $scope: $map;
   @while type-of($scope) ==map and ($index<=length($keys)) {
-    $map: map-get($scope, nth($keys, index));
+    $scope: map-get($scope, nth($keys, $index));
     $index: $index + 1;
   }
   @return $scope;

@@ -1,0 +1,41 @@
+.achievement {
+    border:1px solid #cfcfcf;
+    border-bottom: none ;
+    border-radius: 5px;
+    padding: 17px 20px;
+    position: relative;
+    &::before{
+        content:"";
+        position: absolute;
+        left:-1px;
+        top:1px;
+        width: 20px;
+        height: 100%;
+        border-bottom: 1px solid #cfcfcf;
+        border-bottom-left-radius: inherit;
+    }
+    &::after{
+        content:"";
+        position: absolute;
+        right:-1px;
+        top:1px;
+        width: 20px;
+        height: 100%;
+        border-bottom: 1px solid #cfcfcf;
+        border-bottom-right-radius: inherit;
+    }
+    &__title {
+        font-size: 24px;
+        line-height: 24px;
+        text-align: center;
+    }
+    &__category {
+        position: absolute;
+        text-align: center;
+        font-size: 12px;
+        line-height: 12px;
+        left:30px;right:30px;
+        bottom: 0;
+        transform: translateY(50%);
+   }
+}

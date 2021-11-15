@@ -1,0 +1,28 @@
+.banner {
+  &__inner {
+    position: relative;
+    padding: 25px 20px 0px;
+    text-align: center;
+    background: linear-gradient(to top, white 176px, transparent 176px),
+      url(../../img/index-background-mobile@1x.jpg) no-repeat center top;
+
+    color: #fff;
+    @media (min-resolution: 144dpi), (min-resolution: 1.5dppx) {
+    }
+  }
+  &__text {
+    padding-bottom: 25px;
+  }
+  &__title {
+    margin-bottom: 18px;
+  }
+  &__sub-title {
+    font-size: 14px;
+    line-height: 14px;
+  }
+  &__button {
+    width: 100%;
+  }
+  &__image {
+  }
+}

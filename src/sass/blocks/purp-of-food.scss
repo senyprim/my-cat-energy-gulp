@@ -1,0 +1,58 @@
+.purp-of-food {
+    padding:0 20px;
+
+    &__list {
+        padding-top: -20px;
+    }
+    &__item {
+        position: relative;
+        background-color:#f2f2f2 ;
+        padding: 20px;
+        margin-top: 20px;
+        &::before{
+            content: "";
+            position: absolute;
+            width: 50px;
+            height:50px;
+            background-color: #68b738;
+            border-radius: 50%;
+        }
+
+        &::after{
+            content: "";
+            position: absolute;
+            width: 90px;
+            height:85px;
+            top:0px;
+            left: 0px;
+        }
+        &--slim::after{
+            background: url(../../img/sprite-cat-slim.svg) no-repeat center;
+            background-size:36px 50px;
+        }
+        &--muscles::after{
+            background: url(../../img/sprite-cat-plump.svg) no-repeat center;
+            background-size:67px 28px;
+        }
+
+    }
+    &__header {
+        text-transform: uppercase;
+        padding:6px 0px 6px 70px;
+    }
+    &__description {
+        padding: 22px 0;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #d9d9d9;
+        font: 14px/18px Arial;
+        color:#444;
+    }
+    &__link {
+        text-transform:uppercase ;
+        font: 16px/16px;
+        padding-right: 36px;
+        
+        background: url(../../img/arrow.svg) no-repeat right center;
+        background-size: 24px;
+    }
+}

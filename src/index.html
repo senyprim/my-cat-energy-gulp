@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My cat energy | main</title>
+
     <link rel="stylesheet" href="./css/lib.css" />
+    <link rel="stylesheet" href="./css/style.css" />
   </head>
 
   <body>
@@ -28,9 +30,7 @@
                   srcset="./img/sprite.svg#sprite-logotype-tablet"
                 />
                 <img
-                  src="./img/sprite.svg#sprite-logotype-mobile"
-                  width="190"
-                  height="38"
+                  src="./img/sprite-logotype-mobile.svg"
                   alt="Логотип: Кэт энерджи"
                 />
               </picture>
@@ -49,17 +49,18 @@
             </ul>
           </div>
         </nav>
-        <div class="header__content">
-          <div class="header__content-text">
-            <h1 class="header__title">Функциональное питание для котов</h1>
-            <p class="header__sub-title">Занялся собой? Займись котом!</p>
-            <a href="" class="button button--big header__button"
-              >Подобрать программу</a
-            >
+      </header>
+      <main class="page__index-main main">
+      <section class="banner">
+        <div class="banner__inner">
+          <div class="banner__text">
+            <h1 class="banner__title">Функциональное питание для котов</h1>
+            <p class="banner__sub-title">Занялся собой? Займись котом!</p>
           </div>
 
-          <picture class="header__content-image">
+          <picture class="banner__image">
             <source
+              sizes="(min-weight:320px) 280px, (min-weight:768px) 709px, 552px"
               srcset="
                 ./img/index-header@1x.webp 1x,
                 ./img/index-header@2x.webp 2x
@@ -102,13 +103,16 @@
               alt="Питание для котов"
             />
           </picture>
+          <a href="" class="button button--big banner__button"
+            >Подобрать программу</a
+          >
         </div>
-      </header>
-      <main class="page__index-main main">
+      </section>
+     
         <section class="purp-of-food">
           <h2 class="visually-hidden">назначение кормов</h2>
           <ul class="purp-of-food__list">
-            <li class="purp-of-food__item">
+            <li class="purp-of-food__item purp-of-food__item--slim">
               <h3 class="purp-of-food__header">Похудение</h3>
               <p class="purp-of-food__description">
                 Ваш кот весит больше собаки и почти утратил способность лазить
@@ -117,7 +121,7 @@
               </p>
               <a href="" class="purp-of-food__link">Каталог Slim</a>
             </li>
-            <li class="purp-of-food__item">
+            <li class="purp-of-food__item purp-of-food__item--muscles">
               <h3 class="purp-of-food__header">Набор Массы</h3>
               <p class="purp-of-food__description">
                 Заработать авторитет среди дворовых котов и даже собак? Серия
@@ -130,28 +134,28 @@
         <section class="advantage">
           <div class="advantage__inner">
             <h2 class="visually-hidden">Приемущества питания</h2>
-            <p class="advantage__title"></p>
+            <p class="advantage__title h2">Как это работает</p>
             <ol class="advantage__list">
-              <li class="advantage__item advantage__item-useful">
-                <p class="advantage__item-text"></p>
+              <li class="advantage__item advantage__item advantage__item advantage__item--useful">
+                <p class="advantage__item-text">Функциональное питание содержит только полезные питательные вещества.</p>
               </li>
-              <li class="advantage__item advantage__item--comfortable">
-                <p class="advantage__item-text"></p>
+              <li class="advantage__item advantage__item advantage__item advantage__item--comfortable">
+                <p class="advantage__item-text">Выпускается в виде порошка, который нужно лишь залить кипятком и готово.</p>
               </li>
-              <li class="advantage__item advantage__item--saving-food">
-                <p class="advantage__item-text"></p>
+              <li class="advantage__item advantage__item advantage__item advantage__item--saving-food">
+                <p class="advantage__item-text">Замените один-два приема обычной еды на наше функциональное питание.</p>
               </li>
-              <li class="advantage__item advantage__item--noticeable">
-                <p class="advantage__item-text"></p>
+              <li class="advantage__item advantage__item advantage__item advantage__item--noticeable">
+                <p class="advantage__item-text">Уже через месяц наслаждайтесь изменениями к лучшему вашего питомца!</p>
               </li>
             </ol>
           </div>
         </section>
         <section class="example">
-          <div class="example__inner">
-            <h2 class="">Живой пример</h2>
+          <div class="example__title">
+            <h2 class="example__header">Живой пример</h2>
           </div>
-          <div class="example__inner">
+          <div class="example__content">
             <div class="example__text-block">
               <p class="example__description">
                 Борис сбросил 5 кг за 2 месяца, просто заменив свой обычный корм
@@ -162,11 +166,11 @@
               <ul class="example__achievement-list">
                 <li class="example__achievement achievement">
                   <p class="achievement__title">5 кг</p>
-                  <p class="achievement__suptitle">снижение веса</p>
+                  <p class="achievement__category">снижение веса</p>
                 </li>
                 <li class="example__achievement achievement">
                   <p class="achievement__title">60 дней</p>
-                  <p class="achievement__suptitle">затрачено времени</p>
+                  <p class="achievement__category">затрачено времени</p>
                 </li>
               </ul>
               <div class="example__expenses">
@@ -261,12 +265,14 @@
                   type="range"
                   min="0"
                   max="100"
+                  step="1"
                   value="50"
                   class="image-slider__trackbar"
                 />
                 <button class="image-slider__after"></button>
               </div>
             </div>
+          </div>
           </div>
         </section>
       </main>
@@ -316,14 +322,14 @@
                 alt="Карта"
               />
             </picture>
-            <iframe
+            <!-- <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1998.5991043705196!2d30.320889251809522!3d59.9387941817873!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4696310fca5ba729%3A0xea9c53d4493c879f!2z0JHQvtC70YzRiNCw0Y8g0JrQvtC90Y7RiNC10L3QvdCw0Y8g0YPQuy4sIDE5LCDQodCw0L3QutGCLdCf0LXRgtC10YDQsdGD0YDQsywgMTkxMTg2!5e0!3m2!1sru!2sru!4v1636514261533!5m2!1sru!2sru"
               width="1440"
               height="400"
               style="border: 0"
               allowfullscreen=""
               loading="lazy"
-            ></iframe>
+            ></iframe> -->
           </div>
         </section>
         <div class="footer__links">
@@ -383,23 +389,12 @@
             </li>
           </ul>
           <div class="footer__develop">
-
-            <a
-            href="#"
-            class="footer__develop-link"
-          >
-          <span class="footer__develop-text">
-            HTML Academy
-          </span>
-            <svg
-              width="28"
-              height="35"
-              focusable="false"
-            >
-              <use xlink:href="#inline-htmlacademy"></use>
-            </svg>
-          </a>
-          </div>
+            <a href="#" class="footer__develop-link">
+              <span class="footer__develop-text"> HTML Academy </span>
+              <svg width="28" height="35" focusable="false">
+                <use xlink:href="#inline-htmlacademy"></use>
+              </svg>
+            </a>
           </div>
         </div>
       </footer>

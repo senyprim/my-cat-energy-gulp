@@ -1,0 +1,62 @@
+.advantage {
+
+    &__inner {
+        padding: 10px 20px 20px;
+    }
+    &__title {
+        line-height:60px;
+       
+
+    }
+    &__list {
+        font: 14px/18px Arial;
+        list-style: none;
+        margin: 0;
+        padding: 20px 0;
+
+    }
+    &__item {
+        position: relative;
+        padding:5px 0 5px 80px;
+        min-height: 60px;
+        &+&{
+            margin-top: 20px;
+        }
+        &::before{
+            content: "";
+            position: absolute;
+            width:60px;
+            height:60px;
+            left:0px;
+            top:50%;
+            background-color: #68b738;
+            transform: translateY(-50%);
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        &--useful {
+            &::before{
+                background-image: url("../../img/sprite-icon-leaf.svg");
+                background-size: 32px 32px;
+            }
+        }
+        &--comfortable {
+            &::before{
+                background-image: url("../../img/sprite-icon-tub.svg");
+                background-size: 32px 32px;
+            }
+        }
+        &--saving-food {
+            &::before{
+                background-image: url("../../img/sprite-icon-eat.svg");
+                background-size: 32px 32px;
+            }
+        }
+        &--noticeable {
+            &::before{
+                background-image: url("../../img/sprite-icon-alarm.svg");
+                background-size: 32px 32px;
+            }
+        }
+    }
+}
