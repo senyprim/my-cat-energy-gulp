@@ -25,6 +25,11 @@ const woff2 = require("gulp-ttf2woff2");
 const webp = require("gulp-webp");
 const merge = require("merge-stream");
 
+const webpack = require('webpack-stream');
+const CircularDependencyPlugin = require('circular-dependency-plugin');
+const DuplicatePackageCheckerPlugin = require("duplicate-package-checker-webpack-plugin");
+
+
 const scriptsLib = ["./node_modules/slick-slider/slick/slick.min.js"];
 const stilesLib = [
   "./node_modules/normalize.css/normalize.css",
@@ -253,8 +258,41 @@ exports.svgSprites = svgSprites;
 
 /* #endregion */
 
+const jsWebpack= () => {
+  return gulp
+      .src(path.src.js, {
+          allowEmpty: true,
+      }) //Найдем наш main файл
+      .pipe(plumber()) //Проигнорируем ошибки
+      .pipe(webpack({
+          mode: process.env.NODE_ENV,
+          output: {
+              filename: '[name].js',
+          },
+          module: {
+              rules: [{
+                  test: /\.m?js$/,
+                  exclude: /(node_modules|bower_components)/,
+                  use: {
+                      loader: 'babel-loader',
+                      options: {
+                          presets: ['@babel/preset-env']
+                      }
+                  }
+              }]
+          },
+          plugins: [
+              new CircularDependencyPlugin(),
+              new DuplicatePackageCheckerPlugin()
+          ]
+      }))
+      .pipe(gulp.dest(path.build.js)) //Выплюнем готовый файл в build
+      // .pipe(reload({ stream: true })) //И перезагрузим сервер
+};
+
 const watcher = () => {
   gulp.watch(path.watch.html, gulp.series(html, reload));
+  gulp.watch(path.watch.js, gulp.series(jsWebpack, reload));
   gulp.watch(
     path.watch.img,
     gulp.series(gulp.parallel(bitMapImage, svgImage, svgSprites, createWebp)),
@@ -273,7 +311,8 @@ const build = gulp.series(
     html,
     bitMapImage,
     svgImage,
-    createWebp
+    createWebp,
+    jsWebpack
   )
 );
 
